@@ -7,12 +7,14 @@ set relativenumber
 augroup numbertoggle
   autocmd!
 augroup END
+set nocompatible
+set encoding=utf-8
 set hidden
+set clipboard=unnamed " automatically yank/paste system clipboard.
+set completeopt=menuone,noselect
 
-
-
+call plug#begin()
 " Plug 'kassio/neoterm'
-
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdTree'
 
@@ -20,9 +22,18 @@ Plug 'scrooloose/nerdTree'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-project.nvim'
+
+" lsp
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
+
+" lint
+Plug 'dense-analysis/ale' " Async Lint Engine
+"Plug 'maximbaz/lightline-ale'
 
 " buffer switching
-Plug 'mihaifm/bufstop'
+" Plug 'mihaifm/bufstop'
 
 " git
 Plug 'tpope/vim-fugitive'
@@ -31,9 +42,11 @@ Plug 'airblade/vim-gitgutter'
 " colors
 Plug 'mhartington/oceanic-next'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
+Plug 'rafamadriz/neon'
 call plug#end()
 
-:lua require('jgtelescope');
+lua require('jgtelescope');
+lua require('jglsp');
 
 let mapleader = ","
 nnoremap ; :
@@ -46,7 +59,6 @@ nnoremap <C-t> :NERDTreeToggle<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-g> <C-\><C-n>
 inoremap <C-g> <Esc>
-tnoremap <C-g> <Esc>
 cnoremap <C-g> <Esc>
 nnoremap <C-g> <Esc>
 vnoremap <C-g> <Esc>
@@ -57,24 +69,25 @@ noremap <C-g> <Esc>
 
 
 " To use `ALT+{h,j,k,l}` to navigate windows from any mode:
-:tnoremap <A-h> <C-\><C-N><C-w>h
-:tnoremap <A-j> <C-\><C-N><C-w>j
-:tnoremap <A-k> <C-\><C-N><C-w>k
-:tnoremap <A-l> <C-\><C-N><C-w>l
-:inoremap <A-h> <C-\><C-N><C-w>h
-:inoremap <A-j> <C-\><C-N><C-w>j
-:inoremap <A-k> <C-\><C-N><C-w>k
-:inoremap <A-l> <C-\><C-N><C-w>l
-:nnoremap <A-h> <C-w>h
-:nnoremap <A-j> <C-w>j
-:nnoremap <A-k> <C-w>k
-:nnoremap <A-l> <C-w>l
+tnoremap <A-h> <C-\><C-N><C-w>h
+tnoremap <A-j> <C-\><C-N><C-w>j
+tnoremap <A-k> <C-\><C-N><C-w>k
+tnoremap <A-l> <C-\><C-N><C-w>l
+inoremap <A-h> <C-\><C-N><C-w>h
+inoremap <A-j> <C-\><C-N><C-w>j
+inoremap <A-k> <C-\><C-N><C-w>k
+inoremap <A-l> <C-\><C-N><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 
 
 
 " files / buffers / fuzzy finding
 nnoremap <C-o> :Telescope file_browser hidden=true<CR>
-nnoremap <Leader>oo :Telescope find_files<CR>
+nnoremap <Leader>oo :Telescope find_files hidden=true<CR>
+nnoremap <Leader>or :Telescope oldfiles<CR>
 nnoremap <C-w> :bd<CR> " close buffer
 tnoremap <C-w> :bd<CR> " close buffer
 
@@ -110,7 +123,8 @@ cmap w!! w !sudo tee %
 
 
 " Theme
-syntax enable
+" let g:neon_style = "default"
+" colorscheme neon
 " colorscheme OceanicNext
 colorscheme onehalfdark
 let g:lightline = { 'colorscheme': 'onehalfdark' }
@@ -134,3 +148,11 @@ function! ClearTerminal()
 endfunction
 
 nnoremap <C-k> :call ClearTerminal()<CR>
+
+
+" compe completions
+" inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })

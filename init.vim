@@ -27,6 +27,7 @@ Plug 'nvim-telescope/telescope-project.nvim'
 " lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/vim-vsnip'
 
 " lint
 Plug 'dense-analysis/ale' " Async Lint Engine
@@ -58,7 +59,7 @@ nnoremap <C-t> :NERDTreeToggle<CR>
 " escape to exit terminal-mode
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-g> <C-\><C-n>
-inoremap <C-g> <Esc>
+" inoremap <C-g> <Esc>
 cnoremap <C-g> <Esc>
 nnoremap <C-g> <Esc>
 vnoremap <C-g> <Esc>
@@ -92,13 +93,14 @@ nnoremap <C-w> :bd<CR> " close buffer
 tnoremap <C-w> :bd<CR> " close buffer
 
 nnoremap <C-b> :Telescope buffers<CR>
+nnoremap <Leader>b :Telescope buffers<CR>
 nnoremap <C-r> :Telescope command_history<CR>
 
 nnoremap <Leader>s :terminal<CR>
 
 
-nnoremap <Leader>gg :Git<CR>
-tnoremap <Leader>gg :Git<CR>
+nnoremap <Leader>gs :Git<CR>
+tnoremap <Leader>gs :Git<CR>
 
 nnoremap <C-s> :w<CR>
 "This unsets the "last search pattern" register by hitting return
@@ -149,10 +151,9 @@ endfunction
 
 nnoremap <C-k> :call ClearTerminal()<CR>
 
-
 " compe completions
-" inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <C-x><C-o>     compe#complete()
 inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 " inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 " inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
